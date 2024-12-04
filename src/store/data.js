@@ -1,45 +1,44 @@
-const URLS = ["https://www.dragonballapi.com/dragonball/",
-              "https://www.dragonballapi.com/dragonballz/",
-              "https://www.dragonballapi.com/dragonballgt/",
-              "https://www.dragonballapi.com/dragonballsuper/",
-              "https://www.dragonballapi.com/dragons/"
-            ];
+const urlPlanets= "https://dragonball-api.com/api/planets?limit=100";
 
-export async function getHomeCharacters(){
+export async function getHomeCharacters(page){
     try {
-      const randomIndex = Math.floor(Math.random() * URLS.length);
-      const randomURL = URLS[randomIndex];
-      const response = await fetch(randomURL);
+      const response = await fetch(`https://dragonball-api.com/api/characters?page=${page}&limit=10`);
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
       }
   
-      const json = await response.json();
+      let json = await response.json();
+      json =
+        {
+          json: json,
+        }
+        console.log(json)
       return json;
     } catch (error) {
       console.error(error.message);
     }
   };
-  export async function getCharactersSaga(saga) {
-    let url = getUrl(saga); 
+
+  export async function getPlanets() {
   
     try {
-      const response = await fetch(url);
+      const response = await fetch(urlPlanets);
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
       }
       const json = await response.json();
       console.log(json);
-      return json;
+      return json.items;
     } catch (error) {
       console.error(error.message);
     }
   }
 
-export async function getCharacter(saga, id) {
-  let url = getUrl(saga);
+
+
+export async function getCharacter(id) {
   try {
-    const response = await fetch(`${url}${id}`);
+    const response = await fetch(`https://dragonball-api.com/api/characters/${id}`);
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
@@ -51,27 +50,56 @@ export async function getCharacter(saga, id) {
   }
 }
 
+export async function fetchCharacters(filters) {
+  const baseUrl = 'https://dragonball-api.com/api/characters';
+  const queryParams = new URLSearchParams();
+  console.log(filters.affiliation.label)
+  if (filters.affiliation.label) queryParams.append('affiliation', filters.affiliation.label);
+  if (filters.gender.label) queryParams.append('gender', filters.gender.label);
+  if (filters.race.label) queryParams.append('race', filters.race.label);
 
-function getUrl(saga){
-  let url = "";
-  switch (saga) {
-    case 0:
-      url = URLS[0];
-      break;
-    case 1:
-      url = URLS[1];
-      break;
-    case 2:
-      url = URLS[2];
-      break;
-    case 3:
-      url = URLS[3];
-      break;
-    case 4:
-      url = URLS[4];
-      break;
-    default:
-      throw new Error("Saga no válida");
+  const url = `${baseUrl}?${queryParams.toString()}`;
+  try {
+    console.log(url)
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch characters');
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
-  return url;
 }
+
+export async function fetchPlanets(filters) {
+  const baseUrl = 'https://dragonball-api.com/api/planets';
+  const queryParams = new URLSearchParams();
+  if (filters.state.value) queryParams.append('isDestroyed', filters.state.value);
+
+  const url = `${baseUrl}?${queryParams.toString()}`;
+  try {
+    console.log(url)
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch characters');
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export async function getPlanet(id) {
+  try {
+    const response = await fetch(`https://dragonball-api.com/api/planets/${id}`);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const json = await response.json();
+    console.log(json);
+    return json;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+

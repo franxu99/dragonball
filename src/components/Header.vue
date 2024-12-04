@@ -17,7 +17,7 @@
     
         <button 
           class="h-14 px-6 text-lg btn" 
-          @click="toPage('planetas')" 
+          @click="toPage('planets')" 
         >Planetas</button>
       </div>
     </header>

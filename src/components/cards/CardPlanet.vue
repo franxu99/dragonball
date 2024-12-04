@@ -1,24 +1,23 @@
 <template>
     <div 
-    class="container-card cursor-pointer p-5 mt-10 rounded-lg shadow-md hover:shadow-lg transition-transform"
-    @click="toCharacter(character.id, sagaCharacters)"
+    class="container-card w-[60%] bg-white shadow-md rounded-lg overflow-hidden cursor-pointer"
+    v-on:click="toPlanet(planet.id)"
     >
-    <div class="card-image w-full h-40 overflow-hidden rounded-t-lg flex items-center justify-center bg-gray-100">
-        <img 
-        alt="user header" 
-        :src="character.image" 
-        class="max-w-full max-h-full"
-        />
-    </div>
-    <div class="card-content p-4">
-        <h2 class="text-lg font-semibold text-gray-800 truncate">
-        {{ character.name }}
-        </h2>
-        <h3 class="text-sm text-gray-500">
-        {{ character.race }}
-        </h3>
-        <p class="m-0 card-description text-gray-600 mt-2">
-        {{ character.description }}
+    <img 
+        :src="planet.image" 
+        :alt="planet.name" 
+        class="w-full h-48 object-cover"
+    />
+
+    <div class="p-4">
+        <h3 class="font-bold text-xl mb-2 text-gray-800">{{ planet.name }}</h3>
+        <p class="text-sm text-gray-600 mb-4">
+        </p>
+        <p class="text-sm">
+        <strong>Estado: </strong> 
+        <span :class="planet.isDestroyed ? 'text-red-500' : 'text-green-500'">
+            {{ planet.isDestroyed ? 'Destruido' : 'Activo' }}
+        </span>
         </p>
     </div>
     </div>
@@ -31,16 +30,15 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const props = defineProps({
-    character: {
+    planet: {
     type: Object,
     required: true,
     },
 });
 
-const toCharacter = (id, saga) => {
+const toPlanet = (id) => {
     router.push({
-    path: `/character/${id}`,
-    query: { saga },
+    path: `/planet/${id}`
     });
 };
 </script>
