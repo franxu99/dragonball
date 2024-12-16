@@ -28,7 +28,7 @@
                 <!-- Contenido -->
                 <div class="tab-content flex-grow overflow-auto">
                     <div v-if="activeTab === 'Descripción'">
-                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Descripción</h2>
+                    <h2 class="text-xl font-semibold text-gray-700">Descripción</h2>
                     <p class="text-gray-600 text-base leading-relaxed">{{ character.description }}</p>
                     </div>
         
@@ -42,25 +42,13 @@
                     </ul>
                     </div>
         
-                    <div v-else-if="activeTab === 'Transformaciones'">
-                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Transformaciones</h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div 
-                        v-for="transformation in character.transformations" 
-                        :key="transformation.id" 
-                        class="flex items-center space-x-4 bg-gray-100 p-3 rounded-lg shadow-sm cursor-pointer"
-                        @click="showTransformations"
-                        >
-                        <img 
-                            :src="transformation.image" 
-                            alt="Transformación {{ transformation.name }}" 
-                            class="w-16 h-16 rounded-md object-contain"
-                        />
-                        <div>
-                            <h4 class="font-medium text-gray-800">{{ transformation.name }}</h4>
-                            <p class="text-sm text-gray-600">Ki: {{ transformation.ki }}</p>
-                        </div>
-                        </div>
+                    <div class="h-full" v-else-if="activeTab === 'Transformaciones'">
+                    <h2 class="text-xl font-semibold text-gray-700">Transformaciones</h2>
+                    <div class="h-[90%]">
+                        <SliderTranform :imagenes="transformations" :intervalo="4000">
+
+                        </SliderTranform>
+
                     </div>
                     </div>
                 </div>
@@ -79,6 +67,7 @@
     import { useRoute } from 'vue-router';
     import { onMounted, ref } from 'vue';
     import { getCharacter } from '@/store/data';
+    import SliderTranform from '@/components/Silder/SliderTranform.vue';
     import PopUpImg from '@/components/PopUps/PopUpImg.vue';
 
     const character = ref({});

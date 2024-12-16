@@ -1,9 +1,9 @@
 <template>
   <div class="h-[15vh] w-full flex flex-col items-center justify-center space-y-4">
     <div class="w-full flex justify-center">
-      <div class="relative w-1/4">
+      <div class="relative w-full flex justify-center">
         <InputText 
-          class="h-[5vh] w-full" 
+          class="h-[5vh] w-[30%] input-text" 
           v-model="search" 
           placeholder="Busca un personaje o planeta" 
         >
@@ -95,5 +95,18 @@ const filteredCharacters = computed(() => {
   background-color: #007bff;
   color: #fff;
   border-color: #007bff;
+}
+
+@media (max-width: 1084px) {
+  .container-home{
+    display: grid;
+  justify-content: center;
+  justify-items: center;
+  grid-template-columns: repeat(1, 1fr); 
+  gap: 20px;
+  }
+  .input-text{
+    width: 80vw;
+  }
 }
 </style>

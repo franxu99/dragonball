@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 h-[10vh] w-[100%] flex justify-center items-center gap-3">
+  <div class="p-4 h-[10vh] w-[100%] flex justify-center items-center gap-3 container-filter">
     <Select
       v-model="selectedAffiliation" 
       :options="affiliationItems" 
@@ -181,5 +181,34 @@ onMounted(loadInitialCharacters);
 .custom-reset-button:hover {
   background-color: #dc2626 !important;
   transform: scale(1.05);
+}
+
+@media (max-width: 1024px) {
+  .container-home{
+    display: grid;
+  justify-content: center;
+  justify-items: center;
+  grid-template-columns: repeat(1, 1fr); 
+  gap: 20px;
+  }
+
+  .container-filter{
+    display: grid;
+  justify-content: center;
+  justify-items: center;
+  grid-template-columns: repeat(1, 1fr); 
+  gap: 20px;
+  height: 100%;
+  }
+
+  .custom-select{
+    width: 80%;
+  }
+  .custom-apply-button{
+    width: 80%;
+  }
+  .custom-reset-button{
+    width: 80%;
+  }
 }
 </style>

@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 
 import Home from '../views/HomeView.vue';
 import Characters from '../views/CharactersView.vue'
-import DetailsView from '@/views/DetailsView.vue';
+import DetailsView from '@/views/DetailsCharactersView.vue';
 import PlanetsView from '@/views/PlanetsView.vue';
 import DetailsPlanetView from '@/views/DetailsPlanetView.vue'
 
