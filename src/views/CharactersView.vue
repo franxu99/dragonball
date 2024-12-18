@@ -23,7 +23,7 @@
       optionLabel="label" 
       class="custom-select w-1/6 md:w-30rem"
     />
-
+    <toast />
     <Button 
       severity="info" 
       label="Aplicar" 
@@ -50,9 +50,20 @@
       :character="character" 
       :sagaCharacters="sagaCharacters"
     />
+    
   </div>
+  <div class="p-10 flex justify-center space-x-2">
+      <button 
+        v-for="pageNumber in 6" 
+        :key="pageNumber" 
+        @click="loadPage(pageNumber)" 
+        :class="['pagination-button', { 'active': pageNumber === page }]"
+      >
+        {{ pageNumber }}
+      </button>
+    </div>
+    
 </template>
-
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
@@ -61,10 +72,15 @@ import { Button } from 'primevue';
 import { getHomeCharacters } from '@/store/data';
 import CardCharacter from '@/components/cards/CardCharacter.vue';
 import { fetchCharacters } from '@/store/data';
+import { useToast } from 'primevue/usetoast';
+import Toast from 'primevue/toast';
 
+const toast = useToast();
 const filteredCharacters = ref([]);
 const sagaCharacters = ref(0);
-
+const res = ref({});
+const page = ref(1);
+const characters = ref([]);
 
 const affiliationItems = ref([
   { label: 'Z Fighter', value: 'z-fighter' },
@@ -98,13 +114,33 @@ const raceItems = ref([
   { label: 'Unknown', value: 'Unknown' }
 ]);
 
-
 const selectedAffiliation = ref('');
 const selectedGender = ref('');
 const selectedRace = ref('');
 
+const loadCharacters = async (pageNumber) => {
+  res.value = await getHomeCharacters(pageNumber);
+  filteredCharacters.value = res.value.json.items;
+};
 
+const loadPage = async (pageNumber) => {
+  page.value = pageNumber;
+  await loadCharacters(pageNumber);
+};
+
+onMounted(() => {
+  loadCharacters(page.value);
+});
+
+// Función modificada para verificar los filtros
 async function applyFilters() {
+  // Verifica si todos los filtros están vacíos
+  if (!selectedAffiliation.value && !selectedGender.value && !selectedRace.value) {
+    // Mostrar un toast de error si no hay filtros seleccionados
+    toast.add({ severity: 'success', summary: 'Error Message', detail: 'Message Content', life: 3000 });
+    return;
+  }
+
   const filters = {
     affiliation: selectedAffiliation.value,
     gender: selectedGender.value,
@@ -112,14 +148,13 @@ async function applyFilters() {
   };
 
   filteredCharacters.value = await fetchCharacters(filters);
-  console.log(filteredCharacters.value)
+  console.log(filteredCharacters.value);
 }
 
 async function resetFilters() {
   selectedAffiliation.value = '';
   selectedGender.value = '';
   selectedRace.value = '';
-  nameFilter.value = '';
   await loadInitialCharacters();
 }
 
@@ -131,6 +166,7 @@ async function loadInitialCharacters() {
 
 onMounted(loadInitialCharacters);
 </script>
+
 
 <style scoped>
 .container-home {

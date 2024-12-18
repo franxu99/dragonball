@@ -53,14 +53,31 @@ export async function getCharacter(id) {
 export async function fetchCharacters(filters) {
   const baseUrl = 'https://dragonball-api.com/api/characters';
   const queryParams = new URLSearchParams();
-  console.log(filters.affiliation.label)
-  if (filters.affiliation.label) queryParams.append('affiliation', filters.affiliation.label);
-  if (filters.gender.label) queryParams.append('gender', filters.gender.label);
-  if (filters.race.label) queryParams.append('race', filters.race.label);
+
+  // Verificar si no hay filtros
+  if (!filters || (!filters.affiliation || !filters.affiliation.label) 
+      && (!filters.gender || !filters.gender.label)
+      && (!filters.race || !filters.race.label)) {
+    // Si no hay filtros, hace la petición sin filtros adicionales
+    const response = await fetch(`${baseUrl}?page=1&limit=10`);
+    try {
+      if (!response.ok) throw new Error('Failed to fetch characters');
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  // Si hay filtros, agrega los filtros a la consulta
+  if (filters.affiliation?.label) queryParams.append('affiliation', filters.affiliation.label);
+  if (filters.gender?.label) queryParams.append('gender', filters.gender.label);
+  if (filters.race?.label) queryParams.append('race', filters.race.label);
 
   const url = `${baseUrl}?${queryParams.toString()}`;
+
   try {
-    console.log(url)
     const response = await fetch(url);
     if (!response.ok) throw new Error('Failed to fetch characters');
     const json = await response.json();
@@ -70,6 +87,7 @@ export async function fetchCharacters(filters) {
     return [];
   }
 }
+
 
 export async function fetchPlanets(filters) {
   const baseUrl = 'https://dragonball-api.com/api/planets';

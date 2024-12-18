@@ -1,6 +1,6 @@
 
     <template>
-        <div class="h-[90vh] w-[100vw] flex justify-center items-center">
+        <div class="h-[90vh] w-[99vw] flex justify-center items-center">
             <div class="card-profile bg-white shadow-lg rounded-2xl flex overflow-hidden">
                 <div class="w-1/3 bg-gradient-to-t from-gray-200 to-gray-100 p-6 flex flex-col items-center">
                 <img 

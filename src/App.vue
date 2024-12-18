@@ -3,13 +3,12 @@
   <main class="fondo">
     <RouterView />
   </main>
-  <footer>
-    <!-- Tu footer aquí -->
-  </footer>
+  <Footer />
 </template>
 
 <script setup>
   import Header from './components/Header.vue';
+  import Footer from './components/Footer.vue';
 </script>
 
 <style>
@@ -19,6 +18,7 @@
   background-position: center; 
   background-attachment: fixed;
   height: 100%;
-  min-height: 90vh;
+  min-height: 80vh;
+  padding-bottom: 5vh;
 }
 </style>

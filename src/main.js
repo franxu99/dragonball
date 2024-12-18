@@ -4,6 +4,7 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura'
 import App from './App.vue'
 import router from './router'
+import ToastService from 'primevue/toastservice';
 import './index.css'
 
 // Crea la app
@@ -21,5 +22,9 @@ app.use(PrimeVue, {
 });
 app.use(router);
 
+app.use(ToastService);
+
 // Monta la app
 app.mount('#app');
+
+
